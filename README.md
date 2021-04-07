@@ -31,7 +31,7 @@
 ・react nativeの書き方  
 
 　・画面の表示  
-　　通常のJSXで使える<div><p>タグなどな使えないので、 
+　　通常のJSXで使えるdivやpタグなどな使えないので、 
 　　react nativeからimportして用意されているタグを使用する  
 　　また、cssは使えないので、react nativeで用意されているstylesheetを使う  
 　　`import {View,Text,StyleSheet,} from 'react-native';`  
@@ -102,8 +102,81 @@
 　　キーボードを消すことが出来る  
 
 
+---
+# imgaePicker 
 
-　　
+・インストール
+　`npm install  expo-constants expo-permissions expo-image-picker`  
+　imagePickerとexpo-permissionsをインストール  
+
+
+・使い方  
+
+サンプルコード  
+import Constants from 'expo-constants';  
+import Permissions from 'expo-permissions';  
+
+ callDeviceCamera = async () => {  
+    const { status } = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);  
+
+　// パーミッションが拒否された場合、カメラを起動しないようにする  
+    if (status !== 'granted') {  
+      return;  
+    }  
+
+    const result = await ImagePicker.launchCameraAsync({  
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,  
+      allowsEditing: true  
+    });  
+
+    if (result.cancelled) {  
+      return;  
+    }  
+
+    const imageInfo = result as ImagePicker.ImageInfo;  
+  }  
+
+
+・ImagePicker.launchCameraAsync  
+　カメラで写真を撮るためのシステムUIを表示させる  
+　mediaTypesで写真撮影か動画撮影か選択出来るようになる  
+　　MediaTypeOptions.All　写真と動画どちらも選択できる(iOSのみ)  
+　　MediaTypeOptions.images　写真のみ  
+　　MediaTypeOptions.Videos　動画のみ  
+
+　戻り値  
+　ユーザーがキャンセルした場合、{ cancelled: true }が返る  
+　それ以外は、以下の情報が入ったオブジェクトが返る  
+　 firebaseのstorageに写真や動画をアップロードする場合、以下のurlをアップロードする  
+　{ cancelled: false, type: 'image', uri, width, height, exif, base64 }  
+　
+
+
+・expo-video-player  
+　動画再生用ライブラリ  
+ 
+　・インストール  
+　　`npm install expo-av`  
+　　`npm install expo-video-player`  
+
+
+サンプルコード  
+　
+import { Video } from 'expo-av'  
+import VideoPlayer from 'expo-video-player'  
+
+<VideoPlayer  
+  videoProps={{  
+    shouldPlay: true,  //読み込み時に動画を再生するかしないか選択する  
+    resizeMode: Video.RESIZE_MODE_CONTAIN,  //動画のアスペクト比を調整する  
+    source: {  
+      uri: ‘動画ソースのURL’,  
+    },  
+  }}  
+  inFullscreen={true}  
+  width={200}  
+  height={100}  
+/>  
 
 
 　　
