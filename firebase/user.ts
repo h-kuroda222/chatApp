@@ -7,8 +7,6 @@ export const userLogin = async (
   password: string,
   navigation: any
 ) => {
-  console.log(mail);
-  console.log(password);
   await firebase
     .auth()
     .signInWithEmailAndPassword(mail, password)
@@ -25,8 +23,6 @@ export const userSignin = async (
   password: string,
   navigation: any
 ) => {
-  console.log(mail);
-  console.log(password);
   await firebase
     .auth()
     .createUserWithEmailAndPassword(mail, password)

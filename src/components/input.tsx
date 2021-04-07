@@ -4,7 +4,7 @@ import { TextInput } from "react-native";
 
 type InputProps = {
   value: string;
-  onChange: Function;
+  onChange: (value: string) => void;
   placeholder: string;
   placeholderTextColor: string;
 };
@@ -14,7 +14,7 @@ export const InputText: React.FC<InputProps> = (props) => {
   return (
     <StyledInputText
       value={value}
-      onChangeText={onChange()}
+      onChangeText={(value: string) => onChange(value)}
       placeholder={placeholder}
       placeholderTextColor={placeholderTextColor}
     />

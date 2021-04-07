@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import firebase from "firebase";
 import "firebase/firestore";
 import styled from "styled-components/native";
 import {
@@ -9,11 +8,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  Alert,
-  TextInput,
 } from "react-native";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-
 import { InputText } from "../components/input";
 import { userLogin } from "../../firebase/user";
 
@@ -27,6 +23,14 @@ const LoginScreen = ({ navigation }: any) => {
     await userLogin(mail, password, navigation);
   };
 
+  const onChangeMail = (value: string) => {
+    setMail(value);
+  };
+
+  const onChangePassword = (value: string) => {
+    setPassword(value);
+  };
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -37,21 +41,21 @@ const LoginScreen = ({ navigation }: any) => {
         <ExpoStatusBar style="light" />
         <KeyboardAvoidingView behavior="padding">
           <StyledInputContainer>
-            <StyledInputText
+            <InputText
               value={mail}
               placeholder="メールアドレスを入力してください"
               placeholderTextColor="#777"
-              onChangeText={(value: string) => {
-                setMail(value);
+              onChange={(value: string) => {
+                onChangeMail(value);
               }}
             />
-            <StyledInputText
-              onChangeText={(value: string) => {
-                setPassword(value);
-              }}
+            <InputText
               value={password}
               placeholder="パスワードを入力してください"
               placeholderTextColor="#777"
+              onChange={(value: string) => {
+                onChangePassword(value);
+              }}
             />
           </StyledInputContainer>
           <Button
@@ -60,12 +64,14 @@ const LoginScreen = ({ navigation }: any) => {
               login(mail, password);
             }}
           />
-          <Button
-            title="ユーザー登録はこちら"
-            onPress={() => {
-              navigation.navigate("Signin");
-            }}
-          />
+          <View style={{ marginTop: 15 }}>
+            <Button
+              title="ユーザー登録はこちら"
+              onPress={() => {
+                navigation.navigate("Signin");
+              }}
+            />
+          </View>
         </KeyboardAvoidingView>
       </StyledContainer>
     </TouchableWithoutFeedback>
@@ -87,16 +93,6 @@ const StyledInputContainer = styled(View)`
   flex-direction: column;
   padding: 10px;
   width: 100%;
-`;
-
-const StyledInputText = styled(TextInput)`
-  margin-top: 20px;
-  padding: 5px 10px;
-  width: 300px;
-  height: 35px;
-  color: #fff;
-  border: 1px solid #999;
-  border-radius: 5px;
 `;
 
 export default LoginScreen;
