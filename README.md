@@ -182,7 +182,7 @@ import VideoPlayer from 'expo-video-player'
 />  
 ```
 ---
-Firebaseエミュレータの環境構築  
+# Firebaseエミュレータの環境構築  
 
 1. firebase CLIをインストール  
 　`npm install -g firebase-tools`  
@@ -212,7 +212,7 @@ Firebaseエミュレータの環境構築
 　　Java SEを最新にアップデート or ダウンロードする  
   
 ---
-Appiumの環境構築  
+# Appiumの環境構築  
 
 ・appiumのインストール  
 　`npm install -g appium`  
