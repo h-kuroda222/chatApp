@@ -92,12 +92,13 @@
 　　キーボードを表示した場合、画面が隠れるため、  
 　　このタグで囲むことでキーボードの上に要素が表示させるようにずれる  
 　　behaviorプロパティにheightかpaddingを指定することで動きを調整できる  
-
+```
 　　<TouchableWithoutFeedback  
  　　　onPress={() => {  
 　　　　Keyboard.dismiss();  
 　　　　}}  
     　>…</TouchableWithoutFeedback>  
+```
 　　で要素を囲むことで、囲まれた要素がタップされた時に、  
 　　キーボードを消すことが出来る  
 
@@ -113,6 +114,7 @@
 ・使い方  
 
 サンプルコード  
+```
 import Constants from 'expo-constants';  
 import Permissions from 'expo-permissions';  
 
@@ -135,6 +137,7 @@ import Permissions from 'expo-permissions';
 
     const imageInfo = result as ImagePicker.ImageInfo;  
   }  
+```
 
 
 ・ImagePicker.launchCameraAsync  
@@ -161,7 +164,7 @@ import Permissions from 'expo-permissions';
 
 
 サンプルコード  
-　
+```
 import { Video } from 'expo-av'  
 import VideoPlayer from 'expo-video-player'  
 
@@ -177,6 +180,129 @@ import VideoPlayer from 'expo-video-player'
   width={200}  
   height={100}  
 />  
+```
+---
+Firebaseエミュレータの環境構築  
+
+1. firebase CLIをインストール  
+　`npm install -g firebase-tools`  
+　https://firebase.google.com/docs/cli#mac-linux-npm  
+
+　firebase CLIのバージョンは、8.14.0以降である必要がある  
+　`firebase —version`で確認できる  
+
+
+2 .  エミュレータをインストールする  
+　　1. プロジェクトの初期化(既にプロジェクトがあった場合でも問題ない)  
+　　　`firebase init`  
+　　　`Error: Failed to authenticate, have you run firebase login?`というエラーが出た場合  
+　　　`firebase login`コマンドでログインする  
+
+　　2.エミュレーターを初期化する   
+　　　`firebase init emulators`  
+　　　対話型のインストーラーが起動するので、プロジェクトにあった選択をする  
+　　　(今回はfirestoreとauthenticationとemulatorを選択する)  
+
+
+３. エミュレーターの起動  
+　`firebase emulators:start`で起動する  
+
+・エミュレータ起動後に「Error: firestore: emulator has exited with code: 1」というエラーが出た場合  
+　→https://www.oracle.com/java/technologies/javase-downloads.html  
+　　Java SEを最新にアップデート or ダウンロードする  
+  
+---
+Appiumの環境構築  
+
+・appiumのインストール  
+　`npm install -g appium`  
+
+・appium-doctorのインストール  
+　`npm install appium-doctor`  
+
+
+・apium-doctorを実行してエラーを修正する  
+　1. Carthage was NOT found!が出た場合  
+　　`brew install carthage`  
+
+　2. ANDROID_HOME environment variable is NOT set!が出た場合  
+　　ターミナルで、ANDROID_HOMEの環境変数を設定する  
+　　・Android studioを起動  
+　　　「file」 → 「other setting」 → 「Default Project Structure」を開くと、android SDKのパスが見れる  
+　　　open ~/.bash_profileでbash_profileを開き、以下のパスを追加  
+　　　export ANDROID_HOME=‘android SDKのパス’   
+　　　source ~/.bash_profileで反映させる  
+
+
+　3. JAVA_HOME environment variable is NOT set!が出た場合  
+　　ターミナルで、JAVA_HOMEのパスを確認する  
+　　/usr/libexec/java_home -v  
+　　表示されたパスをターミナルで設定する  
+　　　(何も表示されない場合、JavaとJava SEをインストールする)  
+　　open ~/.bash_profileでbash_profileを開き、以下のパスを追加  
+　　export JAVA_HOME=‘JAVA_HOMEのパス’  
+　　source ~/.bash_profileで反映させる  
+
+
+・wdのインストール  
+　`npm install wd`  
+
+・apkファイルをダウンロードする(androidエミュレーターを使用する場合)  
+　`expo build:android` で一度ビルドする  
+　表示されたURLからapkファイルをダウンロードし、プロジェクトディレクトリに入れる  
+
+・.appフォルダを作成する(iosエミュレーターを使用する場合)  
+　ターミナルで「react-native run-ios --configuration=release」を入力  
+
+・configの設定  
+　iosエミュレータ−を使用する場合  
+```
+　export const config = {  
+    platformName: "iOS",  
+    platformVersion: "14.3",  
+    deviceName: "iPhone 12 Pro Max",  
+    automationName: "XCUITest",  
+    wdaLocalPort: 19000,  //expoのport番号  
+    nativeWebTap: true,  
+    app:'/Users/daikikuroda/Desktop/dev/fire-app/firechief/fire-chief.app’  //.appファイルのパス  
+};
+```
+
+　androidエミュレーターを使用する場合  
+```
+　export const config = {  
+    platformName: "android",  
+    platformVersion: "10.0",  
+    deviceName: "Android Emulator",  
+    wdaLocalPort: 19000,  
+    nativeWebTap: true,  
+    app:'/Users/daikikuroda/Desktop/dev/fire-app/firechief/fire-chief.apk'　// .apkファイルのパス  
+};  
+```  
+
+
+・aooium desktopのインストール  
+　https://github.com/appium/appium-desktop/releases/tag/v1.9.0  
+
+
+・appiumサーバの立ち上げ  
+　`npm run appium`  
+　もしくはappium desktopの「server starrt」ボタンを押す  
+　※appiumサーバ立ち上げ後に、エミュレーターを起動してください  
+
+
+・テストする要素を編集  
+　テストする要素のタグに「accessibilityLabel=“ID名”」を追加する  
+
+・テストの実行  
+　`npm test ファイル名`  
+　
+
+
+
+
+　　　
+
 
 
 　　
